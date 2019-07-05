@@ -12,6 +12,8 @@
 #import "Tweet.h"
 #import "UIImageView+AFNetworking.h"
 #import "ComposeViewController.h"
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -89,8 +91,10 @@
     TweetCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TweetCell"forIndexPath:indexPath];
     Tweet *tweet = self.displayedTweets[indexPath.row];
     
+    cell.tweet = tweet;
     cell.authorName.text = tweet.user.name;
-    cell.nameHandle.text = tweet.user.screenName;
+    cell.nameHandle.text = @"@";
+    cell.nameHandle.text = [cell.nameHandle.text stringByAppendingString:tweet.user.screenName];
     cell.tweetText.text = tweet.text;
     cell.date.text = tweet.createdAtString;
     cell.likes.text = [NSString stringWithFormat:@"%d", tweet.favoriteCount];
@@ -110,6 +114,15 @@
 //numberOfRows returns the number of items returned from that API (step 9)
 - (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return self.displayedTweets.count;
+}
+
+- (IBAction)logout:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    
+    [[APIManager shared] logout];
 }
 
 @end
