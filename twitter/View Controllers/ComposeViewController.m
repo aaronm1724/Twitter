@@ -27,6 +27,7 @@
     [self composeTweet];
 }
 
+//posts the composed message to the timeline
 - (IBAction)composeTweet:(id)sender {
     [[APIManager shared]postStatusWithText:self.tweetMessage.text completion:^(Tweet *tweet, NSError *error) {
         if(error){

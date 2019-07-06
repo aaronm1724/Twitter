@@ -26,6 +26,8 @@
 
     // Configure the view for the selected state
 }
+
+//checks if the user tapped the like button
 - (IBAction)didTapFavorite:(id)sender {
     if (self.tweet.favorited) {
         self.tweet.favorited = NO;
@@ -59,6 +61,7 @@
     [self refreshData];
 }
 
+//checks if the user tapped the retweet button
 - (IBAction)didTapRetweet:(id)sender {
     if (self.tweet.retweeted) {
         self.tweet.retweeted = NO;

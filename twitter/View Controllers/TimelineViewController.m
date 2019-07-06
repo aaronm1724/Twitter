@@ -14,6 +14,7 @@
 #import "ComposeViewController.h"
 #import "AppDelegate.h"
 #import "LoginViewController.h"
+#import "DetailsViewController.h"
 
 @interface TimelineViewController () <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -43,6 +44,7 @@
     
 }
 
+//refreshes the timeline
 - (void) beginRefreshing {
     
     //API manager calls the completion handler passing back data
@@ -75,8 +77,14 @@
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UINavigationController *navigationController = [segue destinationViewController];   ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+    UINavigationController *navigationController = [segue destinationViewController];
+    if ([[segue destinationViewController] isKindOfClass:[ComposeViewController class]]) {
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
     composeController.delegate = self;
+    }
+/*    else if ([[segue destinationViewController] isKindOfClass: [DetailsViewController class]]) {
+        TweetCell *tappedCell = sender;
+    }*/
 }
 
 - (void)didTweet:(Tweet *)tweet {
@@ -85,6 +93,7 @@
     
 }
 
+//initializes the current cell with all its info
 - (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
     
     //define a custom table view cell and set it's reuse identifier (step 2)
@@ -116,6 +125,7 @@
     return self.displayedTweets.count;
 }
 
+//sets the logout button's functionality
 - (IBAction)logout:(id)sender {
     AppDelegate *appDelegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
